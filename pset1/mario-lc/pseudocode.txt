@@ -1,0 +1,5 @@
+Prompt user for height
+If height is not an integer or height is not between 1 and 8 inclusively
+    Go back to line 1
+Iterate from 1 through height:
+    On iteration i, print (height - i) spaces and i hashes, and followed by a newline
