@@ -66,7 +66,6 @@ int main(int argc, string argv[])
 // Update vote totals given a new vote
 bool vote(string name)
 {
-    // TODO
     // Assume that no two candidates will have the same name
 
     // If name matches one of the names of the cadidates in the election,
@@ -88,8 +87,6 @@ bool vote(string name)
 // Print the winner (or winners) of the election
 void print_winner(void)
 {
-    // TODO
-
     // Make the program remember the max number for me
     int max_votes = 0;
 
@@ -114,6 +111,5 @@ void print_winner(void)
         }
     }
     return;
-
 }
 
