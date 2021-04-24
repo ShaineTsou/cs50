@@ -1,5 +1,6 @@
 #include <cs50.h>
 #include <stdio.h>
+#include <string.h>
 
 // Max voters and candidates
 const int MAX_VOTERS = 100;
@@ -88,6 +89,13 @@ int main(int argc, string argv[])
         // Calculate votes given remaining candidates
         tabulate();
 
+        // Check the votes of each candidate
+        for (int k = 0; k < candidate_count; k++)
+        {
+            printf("%s gets %i votes\n", candidates[k].name, candidates[k].votes);
+        }
+        break;
+
         // Check if election has been won
         bool won = print_winner();
         if (won)
@@ -127,15 +135,39 @@ int main(int argc, string argv[])
 // Record preference if vote is valid
 bool vote(int voter, int rank, string name)
 {
-    // TODO
+    // Check if the name entered is valid
+    // If the candidate is valid, store the index (in the candidates array) of the candidate who is the jth ranked preference for the ith voter
+    // If the name is not one of the candidates, return false
+    for (int i = 0; i < candidate_count; i++)
+    {
+        // printf("Compare %s with %s, the value return from strcmp is %i\n", name, candidates[i].name, strcmp(name, candidates[i].name));
+        if (strcmp(name, candidates[i].name) == 0)
+        {
+            preferences[voter][rank] = i;
+            // printf("\nVoter%i\'s rank%i is %s\n", voter + 1, rank + 1, candidates[preferences[voter][rank]].name);
+            return true;
+        }
+    }
+
+    // What if the voter rank the same candidates different ranks?
+    // Say, Voter0's rank0 is Peter, Voter0's rank1 is also Peter?
+
+    // printf("%s does not match any of the name in the candidates array\n", name);
     return false;
 }
 
 // Tabulate votes for non-eliminated candidates
 void tabulate(void)
 {
-    // TODO
-    return;
+    // Loop through the preferences array to check 
+    // If their top choice candidate has not been eliminated, increment the candidate's vote by 1
+    for (int i = 0; i < voter_count; i++)
+    {
+        if (!candidates[preferences[i][0]].eliminated)
+        {
+            candidates[preferences[i][0]].votes = candidates[preferences[i][0]].votes + 1;
+        }
+    }
 }
 
 // Print the winner of the election, if there is one
