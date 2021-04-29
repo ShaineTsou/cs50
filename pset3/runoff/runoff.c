@@ -3,8 +3,8 @@
 #include <string.h>
 
 // Max voters and candidates
-const int MAX_VOTERS = 100;
-const int MAX_CANDIDATES = 9;
+#define MAX_VOTERS 100
+#define MAX_CANDIDATES 9
 
 // preferences[i][j] is jth preference for voter i
 int preferences[MAX_VOTERS][MAX_CANDIDATES];
