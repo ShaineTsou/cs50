@@ -89,12 +89,11 @@ int main(int argc, string argv[])
         // Calculate votes given remaining candidates
         tabulate();
 
-        // Check the votes of each candidate
+        // Check the votes of each candidate for development purpose
         for (int k = 0; k < candidate_count; k++)
         {
             printf("%s gets %i votes\n", candidates[k].name, candidates[k].votes);
         }
-        break;
 
         // Check if election has been won
         bool won = print_winner();
@@ -102,6 +101,9 @@ int main(int argc, string argv[])
         {
             break;
         }
+        
+        // To stop infinite loop for development purpose
+        break;
 
         // Eliminate last-place candidates
         int min = find_min();
@@ -173,8 +175,29 @@ void tabulate(void)
 // Print the winner of the election, if there is one
 bool print_winner(void)
 {
-    // TODO
-    return false;
+    // If any candidate has more than half of the vote, their name should be printed out
+    string winner;
+
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes > voter_count/2) 
+        {
+            winner = candidates[i].name;
+        };
+    }
+
+    if (winner)
+    {
+        printf("%s", winner);
+        return true;
+    }
+    else
+    {
+        // If nobody has won the election yet, return false
+        // print out winner for development purpose
+        printf("This is what winner is like in the else block, %s", winner);
+        return false;
+    }
 }
 
 // Return the minimum number of votes any remaining candidate has
