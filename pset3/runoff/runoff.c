@@ -102,9 +102,6 @@ int main(int argc, string argv[])
         {
             break;
         }
-        
-        // To stop infinite loop for development purpose
-        break;
 
         // Eliminate last-place candidates
         int min = find_min();
@@ -206,20 +203,47 @@ bool print_winner(void)
 // Return the minimum number of votes any remaining candidate has
 int find_min(void)
 {
-    // TODO
-    return 0;
+    // Initialize a variable called min to be the largest number the vote can be, which is voter_count
+    int min = voter_count;
+
+    // Iterate through the candidates array, if the votes the remaining candidate has is less than min, set that value to be min
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (!candidates[i].eliminated)
+        {
+            if (candidates[i].votes < min)
+            {
+                min = candidates[i].votes;
+            }
+        }
+    }
+    return min;
 }
 
 // Return true if the election is tied between all candidates, false otherwise
 bool is_tie(int min)
 {
-    // TODO
-    return false;
+    // If any of the candidates has the votes greater than min, the election is not tied
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes > min)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 // Eliminate the candidate (or candidates) in last place
 void eliminate(int min)
 {
-    // TODO
+    // Iterate through the candidates array, eliminate anyone with minimum number of votes
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes == min)
+        {
+            candidates[i].eliminated = true;
+        }
+    }
     return;
 }
