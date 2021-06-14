@@ -90,12 +90,6 @@ int main(int argc, string argv[])
         // Calculate votes given remaining candidates
         tabulate();
 
-        // Check the votes of each candidate for development purpose
-        for (int k = 0; k < candidate_count; k++)
-        {
-            printf("%s gets %i votes\n", candidates[k].name, candidates[k].votes);
-        }
-
         // Check if election has been won
         bool won = print_winner();
         if (won)
@@ -136,67 +130,64 @@ int main(int argc, string argv[])
 bool vote(int voter, int rank, string name)
 {
     // Check if the name entered is valid
-    // If the candidate is valid, store the index (in the candidates array) of the candidate who is the jth ranked preference for the ith voter
-    // If the name is not one of the candidates, return false
     for (int i = 0; i < candidate_count; i++)
     {
-        // printf("Compare %s with %s, the value return from strcmp is %i\n", name, candidates[i].name, strcmp(name, candidates[i].name));
+        // If the candidate is valid, store the index (in the candidates array) of the candidate who is the jth ranked preference for the ith voter
         if (strcmp(name, candidates[i].name) == 0)
         {
             preferences[voter][rank] = i;
-            // printf("\nVoter%i\'s rank%i is %s\n", voter + 1, rank + 1, candidates[preferences[voter][rank]].name);
             return true;
         }
     }
 
-    // What if the voter rank the same candidates different ranks?
-    // Say, Voter0's rank0 is Peter, Voter0's rank1 is also Peter?
-
-    // printf("%s does not match any of the name in the candidates array\n", name);
+    // If the name doesn't match any of the candidates name, return false
     return false;
 }
 
 // Tabulate votes for non-eliminated candidates
 void tabulate(void)
 {
-    // Loop through the preferences array to check 
+    // Loop through the preferences array to check
     for (int i = 0; i < voter_count; i++)
     {
-        // If their top choice candidate has not been eliminated, increment the candidate's vote by 1
-        // If their top choice candidate has been eliminated, check if the next preference of candiddate
+        // If their first choice of remaining candidate has not been eliminated, increment the candidate's vote by 1
+        // If their first choice of remaining candidate has been eliminated, go to check the next preference of candiddate
         int k = 0;
-        if (!candidates[preferences[i][k]].eliminated)
+
+        while (candidates[preferences[i][k]].eliminated)
         {
-            candidates[preferences[i][k]].votes = candidates[preferences[i][k]].votes + 1;
+            k++;
         }
+
+        candidates[preferences[i][k]].votes = candidates[preferences[i][k]].votes + 1;
     }
 }
 
 // Print the winner of the election, if there is one
 bool print_winner(void)
 {
-    // If any candidate has more than half of the vote, their name should be printed out
-    string winner;
+    // If any candidate has more than half of the votes, winner_count increments by 1, and assign the candidate's name to winner
+    string winner = " ";
+    int winner_count = 0;
 
     for (int i = 0; i < candidate_count; i++)
     {
-        if (candidates[i].votes > floor(voter_count / 2)) 
+        if (candidates[i].votes > floor(voter_count / 2))
         {
+            winner_count++;
             winner = candidates[i].name;
         };
     }
 
-    if (winner)
+    // If winner is still an empty string, or there is not only one winner
+    if (strcmp(winner, " ") == 0 || winner_count != 1)
     {
-        printf("%s\n", winner);
-        return true;
+        return false;
     }
     else
     {
-        // If nobody has won the election yet, return false
-        // print out winner for development purpose
-        printf("This is what winner is like in the else block, %s", winner);
-        return false;
+        printf("%s\n", winner);
+        return true;
     }
 }
 
